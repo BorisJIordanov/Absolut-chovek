@@ -6,7 +6,7 @@ import keyboard
 from openai import OpenAI
 import openai
 
-def record_with_space_stop( fs=44100, channels=2):
+def stopRecordingWhenSpaceBarPressed( fs=44100, channels=2):
     """
     Starts recording audio and stops when the space bar is pressed.
     
@@ -18,13 +18,13 @@ def record_with_space_stop( fs=44100, channels=2):
     stop_recording = False
     recorded_data = []  # List to hold recorded audio frames
 
-    def check_space_press():
+    def isSapceBarPressed():
         global stop_recording
         keyboard.wait('space')  # Wait until space bar is pressed
         stop_recording = True
         print("Stopping recording...")
 
-    def callback(indata, frames, time, status):
+    def audiDataCallback(indata, frames, time, status):
         if status:
             print(status, file=sys.stderr)
         recorded_data.append(indata.copy())  # Append incoming audio data
@@ -54,7 +54,7 @@ client = OpenAI(api_key="your_api_key")
 
 
 
-def chat_with_chatgpt(transcribed_text):
+def apiRequestOpenAiWhisper(transcribed_text):
     openai.api_key = "your_api_key"
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",  
