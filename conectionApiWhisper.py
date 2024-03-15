@@ -42,7 +42,7 @@ def transcribe_audio_whisper(audio_file_path, api_key):
 
 # Example usage
 def main():
-    api_key = os.getenv("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")  # It's safer to use an environment variable for the API key
+    api_key = os.getenv("your_api_key_here")
     audio_file_path = 'C:\\Users\\user\\Desktop\\Absolut Person\\recording.wav'
     transcription = transcribe_audio_whisper(audio_file_path, api_key)
     if transcription:
