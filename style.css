@@ -1,0 +1,44 @@
+body {
+  background-color: #f2e9e1;
+  color: #2e2e2e;
+  text-align: center;
+}
+.header {
+  background-color: #e9e9e9;
+  right: 0;
+  left: 0;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  background-color: #db9a8f;
+  border-radius: 50%;
+}
+.about-button {
+  background-color: transparent;
+  border: none;
+  color: #814256;
+  font-size: 16px;
+}
+.microphone-button {
+  width: 100px;
+  height: 100px;
+  background-color: #672a3f;
+  border-radius: 50%;
+  margin-top: 200px;
+  margin-left: 500px;
+  margin-right: 200px;
+  cursor: pointer;
+}
+.micro-img{
+width: 99px;
+height: 99px;
+border-radius: 50%;
+align-items: center;
+}
+#logo{
+width: 79px;
+height: auto;
+border-radius: 50%;
+}
