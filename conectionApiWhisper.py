@@ -1,7 +1,7 @@
 import requests
 import os
 
-def transcribe_audio_whisper(audio_file_path, api_key):
+def textInterceptorAndTranscriber(audio_file_path, api_key):
     """
     Transcribes an audio file using OpenAI's Whisper API.
 
@@ -41,7 +41,7 @@ def transcribe_audio_whisper(audio_file_path, api_key):
         return None
 
 # Example usage
-def main():
+def mainFuctionResponseCallback():
     api_key = os.getenv("your_api_key_here")
     audio_file_path = 'C:\\Users\\user\\Desktop\\Absolut Person\\recording.wav'
     transcription = transcribe_audio_whisper(audio_file_path, api_key)
