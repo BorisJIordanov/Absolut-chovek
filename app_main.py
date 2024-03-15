@@ -5,23 +5,19 @@ import threading
 import keyboard
 from openai import OpenAI
 import openai
+from pathlib import Path
+from pygame import mixer
 
+client = OpenAI(api_key="your_api_key_here")
 
-def record_with_space_stop( fs=44100, channels=2):
-    """
-    Starts recording audio and stops when the space bar is pressed.
-    
-    :param filename: Filename where the recording will be saved.
-    :param fs: Sampling frequency.
-    :param channels: Number of audio channels.
-    """
+def record_voice(fs=44100, channels=2):
     global stop_recording
     stop_recording = False
-    recorded_data = []  # List to hold recorded audio frames
+    recorded_data = [] 
 
     def check_space_press():
         global stop_recording
-        keyboard.wait('space')  # Wait until space bar is pressed
+        keyboard.wait('space')  
         stop_recording = True
         print("Stopping recording...")
 
@@ -43,17 +39,10 @@ def record_with_space_stop( fs=44100, channels=2):
         print(f"An error occurred: {e}")
     finally:
         if recorded_data:  # Check if there is anything to save
-            np_data = np.concatenate(recorded_data, axis=0)  # Concatenate all recorded audio frames
+            np_data = np.concatenate(recorded_data, axis=0)  # Concatenate all recorded audio framese
             filename= "C:\\Users\\user\\Desktop\\hacktues_10_2.0\\Recording.wav"
             write(filename, fs, np_data)  # Save the recording as a WAV file
             print(f"Recording finished. File saved as {filename}")
-
-
-
-# Create an api client
-client = OpenAI(api_key="your_api_key_here")
-
-
 
 def chat_with_chatgpt(transcribed_text):
     openai.api_key = "your_api_key_here"
@@ -63,23 +52,39 @@ def chat_with_chatgpt(transcribed_text):
     )
     return response.choices[0].message.content
 
+def transcribe_text_to_audio(input_text):
+    speech_file_path = Path(__file__).parent / "speech.mp3"
+    response = client.audio.speech.create(
+        model="tts-1-hd",
+        voice="nova",
+        input= input_text
+)
+    response.stream_to_file(speech_file_path)
+
+
 def transcribe_audio_to_text():
     audio_file= open("C:\\Users\\user\\Desktop\\hacktues_10_2.0\\Recording.wav", "rb")
 
     transcription = client.audio.transcriptions.create(
-    model="whisper-1", 
+    model="whisper-1-hd", 
     file=audio_file
     )
 
     return transcription.text
 
+def  play_audio_file():
+    mixer.init()
+    mixer.music.load(Path(__file__).parent / "speech.mp3")
+    mixer.music.play()
 
 while(True):
-    record_with_space_stop(fs=44100, channels=2)
+    record_voice(fs=44100, channels=2)
     transcribed_text = transcribe_audio_to_text()
     answer = chat_with_chatgpt(transcribed_text)
     print(f"Question: {transcribed_text}")
+    transcribe_text_to_audio(answer) 
     print(f"Answer: {answer}")
+    play_audio_file()
     command = input()
     if(command == "exit"):
         break
