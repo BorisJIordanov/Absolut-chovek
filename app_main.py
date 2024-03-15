@@ -6,6 +6,7 @@ import keyboard
 from openai import OpenAI
 import openai
 
+
 def record_with_space_stop( fs=44100, channels=2):
     """
     Starts recording audio and stops when the space bar is pressed.
@@ -50,27 +51,35 @@ def record_with_space_stop( fs=44100, channels=2):
 
 
 # Create an api client
-client = OpenAI(api_key="your_api_key")
+client = OpenAI(api_key="your_api_key_here")
 
 
 
 def chat_with_chatgpt(transcribed_text):
-    openai.api_key = "your_api_key"
+    openai.api_key = "your_api_key_here"
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",  
         messages=[{"role": "system", "content": "Your main purpose is to answer to 4-8 year old kids in a playful and understandable way.p"},{"role": "user", "content": transcribed_text}]
     )
     return response.choices[0].message.content
 
-voiceinput= record_with_space_stop(fs=44100, channels=2)
+def transcribe_audio_to_text():
+    audio_file= open("C:\\Users\\user\\Desktop\\hacktues_10_2.0\\Recording.wav", "rb")
 
-audio_file= open("C:\\Users\\user\\Desktop\\hacktues_10_2.0\\Recording.wav", "rb")
+    transcription = client.audio.transcriptions.create(
+    model="whisper-1", 
+    file=audio_file
+    )
 
-# Transcribe
-transcription = client.audio.transcriptions.create(
-  model="whisper-1", 
-  file=audio_file
-)
+    return transcription.text
 
-print(transcription.text)
-print(chat_with_chatgpt(transcription.text))
+
+while(True):
+    record_with_space_stop(fs=44100, channels=2)
+    transcribed_text = transcribe_audio_to_text()
+    answer = chat_with_chatgpt(transcribed_text)
+    print(f"Question: {transcribed_text}")
+    print(f"Answer: {answer}")
+    command = input()
+    if(command == "exit"):
+        break
