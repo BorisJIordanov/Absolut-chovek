@@ -24,7 +24,7 @@ def stopRecordingWhenSpaceBarPressed( fs=44100, channels=2):
         stop_recording = True
         print("Stopping recording...")
 
-    def audiDataCallback(indata, frames, time, status):
+    def audioDataCallback(indata, frames, time, status):
         if status:
             print(status, file=sys.stderr)
         recorded_data.append(indata.copy())  # Append incoming audio data
