@@ -5,10 +5,10 @@ import threading
 import keyboard
 from openai import OpenAI
 import openai
-from pathlib import Path
-from pygame import mixer
+from pathlib import Path 
+from playsound import playsound 
 
-client = OpenAI(api_key="your_api_key_here")
+client = OpenAI(api_key="")
 
 def record_voice(fs=44100, channels=2):
     global stop_recording
@@ -45,9 +45,9 @@ def record_voice(fs=44100, channels=2):
             print(f"Recording finished. File saved as {filename}")
 
 def chat_with_chatgpt(transcribed_text):
-    openai.api_key = "your_api_key_here"
+    openai.api_key = ""
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  
+        model="gpt-4",  
         messages=[{"role": "system", "content": "Your main purpose is to answer to 4-8 year old kids in a playful and understandable way.p"},{"role": "user", "content": transcribed_text}]
     )
     return response.choices[0].message.content
@@ -55,28 +55,26 @@ def chat_with_chatgpt(transcribed_text):
 def transcribe_text_to_audio(input_text):
     speech_file_path = Path(__file__).parent / "speech.mp3"
     response = client.audio.speech.create(
-        model="tts-1-hd",
+        model="tts-1",
         voice="nova",
         input= input_text
-)
-    response.stream_to_file(speech_file_path)
-
+) 
+    response.stream_to_file(speech_file_path) 
 
 def transcribe_audio_to_text():
     audio_file= open("C:\\Users\\user\\Desktop\\hacktues_10_2.0\\Recording.wav", "rb")
 
     transcription = client.audio.transcriptions.create(
-    model="whisper-1-hd", 
+    model="whisper-1", 
     file=audio_file
     )
 
     return transcription.text
 
-def  play_audio_file():
-    mixer.init()
-    mixer.music.load(Path(__file__).parent / "speech.mp3")
-    mixer.music.play()
-
+def  play_audio_file(): 
+    path  = Path(__file__).parent / "speech.mp3" 
+    playsound(path)
+ 
 while(True):
     record_voice(fs=44100, channels=2)
     transcribed_text = transcribe_audio_to_text()
