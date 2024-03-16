@@ -1,7 +1,3 @@
-## Our presantation
-
-https://www.canva.com/design/DAF_kabJLX8/5xNxnv4GgxQVuK1ikxpOiA/view?utm_content=DAF_kabJLX8&utm_campaign=designshare&utm_medium=link&utm_source=editor
-
 ## ZaYou
 
 ZaYou is an interactive application designed to facilitate voice communication between children of various ages and a friendly bunny character. Children can ask questions and engage in conversations with the bunny, receiving vocal responses in return. The primary aim of ZaYou is to provide a fun and educational platform where children can acquire basic knowledge in an engaging manner.
